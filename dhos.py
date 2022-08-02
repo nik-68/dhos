@@ -6,8 +6,6 @@ import threading
 import colorama
 import requests
 from html import escape
-import os
-import packets
 #from Logic.Device import Device
 #from Logic.Player import Players
 #from Packets.LogicMessageFactory import packets
