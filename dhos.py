@@ -2,7 +2,7 @@ import logging
 import socket
 import time
 import os
-from threading import *
+from threading import
 import colorama
 import requests
 from html import escape
