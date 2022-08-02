@@ -148,4 +148,4 @@ if __name__ == '__main__':
 		server = Server('0.0.0.0', 9339)
 		server.start()
 	except Exception as e:
-		_(f'{blue}Port {red}"{green}9333{red}"{blue} enisss{red}\n\n{green}WHAT??? GENE???:\n{purple}{e}{red}')7
+		_(f'{blue}Port {red}"{green}9333{red}"{blue} enisss{red}\n\n{green}WHAT??? GENE???:\n{purple}{e}{red}')
