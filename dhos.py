@@ -65,7 +65,7 @@ class Server:
 			Server.ThreadCount += 1
 			_(f'{blue}Players Online! {green}{Server.ThreadCount}')
 
-class ClientThread(Thread):
+class ClientThread("Thread"):
 	def __init__(self, client, address):
 		super().__init__()
 		self.client = client
