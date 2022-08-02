@@ -11,7 +11,7 @@ import packets
 #from Logic.Device import Device
 #from Logic.Player import Players
 #from Packets.LogicMessageFactory import packets
-from Utils.Config import Config
+#from Utils.Config import Config
 
 #logging.basicConfig(filename="errors.log", level=logging.INFO, filemode="w")
 
