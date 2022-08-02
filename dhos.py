@@ -7,9 +7,12 @@ import colorama
 import requests
 from html import escape
 import os
-from Logic.Device import Device
-from Logic.Player import Players
-from Packets.LogicMessageFactory import packets
+import Device
+import Players
+import packets
+#from Logic.Device import Device
+#from Logic.Player import Players
+#from Packets.LogicMessageFactory import packets
 from Utils.Config import Config
 
 #logging.basicConfig(filename="errors.log", level=logging.INFO, filemode="w")
