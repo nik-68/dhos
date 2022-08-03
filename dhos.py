@@ -27,8 +27,6 @@ from threading import Thread
 import random
 from colorama import Fore, Style
 import os
-from text import
-import webbrowser as wb
 
 users = [
     "Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.3) Gecko/20090913 Firefox/3.5.3",
