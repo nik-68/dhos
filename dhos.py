@@ -366,7 +366,7 @@ def main():
         usage='./%(prog)s -t [target] -p [port] -t [number threads]',
         formatter_class=RawTextHelpFormatter,
         prog='pyddos',
-        description=cprint(title,'white',attrs=['bold']),
+        description=cprint('time','white',attrs=['bold']),
         epilog='''
 Example:
     ./%(prog)s -d www.example.com -p 80 -T 2000 -Pyslow
