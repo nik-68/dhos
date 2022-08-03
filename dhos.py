@@ -46,7 +46,6 @@ print(green + f"З А Г Р У З К А....")
 time.sleep(1.5)
 os.system("clear")
 
-print (banner)
 print('''🅳🅴🅳🅲🅾🅳🅴 🆃🅴🅰🅼''')
 print("DDos script")
 
