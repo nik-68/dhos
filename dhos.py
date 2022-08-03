@@ -26,15 +26,14 @@ time.sleep(1.5)
 os.system("clear")
 
 print('''🅳🅴🅳🅲🅾🅳🅴 🆃🅴🅰🅼''')
-
+print("
       _ \        __ \  __ \               ___|           _)       |   
      |   | |   | |   | |   |  _ \   __| \___ \   __|  __| | __ \  __|  
      ___/  |   | |   | |   | (   |\__ \       | (    |    | |   | |   
     _|    \__, |____/ ____/ \___/ ____/ _____/ \___|_|   _| .__/ \__|  
            ____/                                            _|         
-                                                                    
- print("DDos python script")
-
+  ")                                                                  
+print("DDos python script")
 import os
 import sys
 import json
