@@ -1,7 +1,6 @@
 import threading
 import requests
 import os
-
 # DDoS
 import colorama
 import threading
