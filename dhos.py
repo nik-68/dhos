@@ -27,7 +27,7 @@ from threading import Thread
 import random
 from colorama import Fore, Style
 import os
-from text import *
+from text import
 import webbrowser as wb
 
 users = [
