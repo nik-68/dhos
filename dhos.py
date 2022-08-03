@@ -50,8 +50,8 @@ os.system("clear")
 print('''🅳🅴🅳🅲🅾🅳🅴 🆃🅴🅰🅼''')
 print("DDos script")
 
-url = input("Ссылка════> ")
-threads = int(input("Потоки (~800 лучше)════> "))
+url = input("Ссылка ════> ")
+threads = int(input("Потоки (~800 лучше) ════> "))
 
 payload = {
     'namest': 'username',
